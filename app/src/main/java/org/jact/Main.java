@@ -7,16 +7,11 @@ import org.jact.lexer.Token;
 
 public class Main {
   public static void main(String[] args) {
-    try {
-      Lexer lexer = new Lexer();
-      List<Token> tokens = lexer.tokenize("app/src/main/resources/project.jact");
+    Lexer lexer = new Lexer();
+    List<Token> tokens = lexer.tokenize("app/src/main/resources/project.jact");
 
-      for (Token token : tokens) {
-        System.out.println(token);
-      }
-    } catch (RuntimeException e) {
-      System.err.println("The Lexer has produced an error.\n");
-      System.err.println(e.getMessage());
+    for (Token token : tokens) {
+      System.out.println(token);
     }
   }
 }

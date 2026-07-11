@@ -17,7 +17,7 @@ public class Lexer {
     this.column = 1;
   }
 
-  public List<Token> tokenize(String path) throws RuntimeException {
+  public List<Token> tokenize(String path) {
     List<Token> tokens = new ArrayList<Token>();
 
     try {
@@ -55,30 +55,6 @@ public class Lexer {
         }
 
         throw new RuntimeException("ERROR: Unexpected char: '" + source.charAt(position) + "'.\n");
-        
-        /*while (position < source.length() && isIdentifierChar(source.charAt(position))) {
-          start = position;
-
-          position++;
-          column++;
-        }
-
-        String word = source.substring(start, position);
-        TokenType type = checkForKeyword(word);
-        position++;
-        
-        start = position;
-
-        while (position < source.length() && source.charAt(position) != '"') {
-          position++;
-          column++;
-        }
-
-        String text = source.substring(start, position);
-        position++;
-
-        tokens.add(new Token(TokenType.TYPE_STRING, text, line, column));
-        tokens.add(new Token(type, word, line, column));*/
       }
     } catch (IOException e) {
       String message = "Could not open file: '" + path + "'.\n";
