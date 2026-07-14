@@ -1,10 +1,10 @@
 package org.jact.lexer;
 
 public class Token {
-  public TokenType type;
-  public String text;
-  public int lineNumber;
-  public int column;
+  private TokenType type;
+  private String text;
+  private int lineNumber;
+  private int column;
 
   public Token(TokenType type, String text, int lineNumber, int column) {
     this.type = type;

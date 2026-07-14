@@ -54,7 +54,7 @@ public class Lexer {
           continue;
         }
 
-        throw new RuntimeException("ERROR: Unexpected char: '" + source.charAt(position) + "'.\n");
+        throw new RuntimeException("[ERROR] Unexpected char: '" + source.charAt(position) + "'.\n");
       }
     } catch (IOException e) {
       String message = "Could not open file: '" + path + "'.\n";
@@ -109,7 +109,7 @@ public class Lexer {
 
     while (position < source.length() && source.charAt(position) != '"') {
       if (source.charAt(position) == '\n') {
-        throw new RuntimeException("String literals cannot spam multiple lines.");
+        throw new RuntimeException("[ERROR] String literals cannot spam multiple lines.");
       }
 
       position++;
@@ -117,7 +117,7 @@ public class Lexer {
     }
 
     if (position >= source.length()) {
-      throw new RuntimeException("Unterminated string literal.");
+      throw new RuntimeException("[ERROR] Unterminated string literal.");
     }
 
     String text = source.substring(start, position);
