@@ -6,12 +6,12 @@ project "MyProject"
 compiler gcc
 
 sources {
-    src
-    lib
+  src
+  lib
 }
 
 includes {
-    include
+  include
 }
 
 output build
@@ -19,11 +19,11 @@ output build
 target program
 
 cflags {
-    -Wall
-    -Wextra
-    -O2
+  -Wall
+  -Wextra
+  -O2
 }
 
 ldflags {
-    -lm
+  -lm
 }

@@ -52,7 +52,6 @@ public class ASTNode {
     return "AST Node -> {\n" +
       "\tType: " + type + "\n" +
       "\tValue: '" + value + "'\n" +
-      "\tChildren: "; 
-      
+      "\tChildren: ";
   }
 }
