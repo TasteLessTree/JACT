@@ -66,7 +66,7 @@ public class Parser {
           break;
       
         default:
-          throw new RuntimeException("[ERROR] Unexpected token, unknown keyword: '" + tokens.get(position).getText() + "'.");
+          throw new RuntimeException("\n[ERROR] Unexpected token, unknown keyword: '" + tokens.get(position).getText() + "'.\n");
       }
     }
 
@@ -86,7 +86,7 @@ public class Parser {
       node.setValue(current.getText());
       position++;
     } else {
-      throw new RuntimeException("[ERROR] Expected a string, got: '" + current.getType() + "'.");
+      throw new RuntimeException("\n[ERROR] Expected a string, got: '" + current.getType() + "'.\n");
     }
 
     return node;
@@ -101,7 +101,7 @@ public class Parser {
       node.setValue(current.getText());
       position++;
     } else {
-      throw new RuntimeException("[ERROR] Expected an identifier, got: '" + current.getType() + "'.");
+      throw new RuntimeException("\n[ERROR] Expected an identifier, got: '" + current.getType() + "'.\n");
     }
 
     return node;
@@ -116,7 +116,7 @@ public class Parser {
       node.setValue(current.getText());
       position++;
     } else {
-      throw new RuntimeException("[ERROR] Expected an identifier, got: '" + current.getType() + "'.");
+      throw new RuntimeException("\n[ERROR] Expected an identifier, got: '" + current.getType() + "'.\n");
     }
 
     return node;
@@ -131,7 +131,7 @@ public class Parser {
       node.setValue(current.getText());
       position++;
     } else {
-      throw new RuntimeException("[ERROR] Expected an identifier, got: '" + current.getType() + "'.");
+      throw new RuntimeException("\n[ERROR] Expected an identifier, got: '" + current.getType() + "'.\n");
     }
 
     return node;
@@ -156,12 +156,12 @@ public class Parser {
           position++;
           current = tokens.get(position);
         } else {
-          throw new RuntimeException("[ERROR] Expected a closed curly brace '}' at the end of block 'sources', got: '" + current.getType() + "'.");
+          throw new RuntimeException("\n[ERROR] Expected a closed curly brace '}' at the end of block 'sources', got: '" + current.getType() + "'.\n");
         }
       }
       position++;
     } else {
-      throw new RuntimeException("[ERROR] Expected an open curly brace '{', got: '" + current.getType() + "'.");
+      throw new RuntimeException("\n[ERROR] Expected an open curly brace '{', got: '" + current.getType() + "'.\n");
     }
 
     return node;
@@ -186,12 +186,12 @@ public class Parser {
           position++;
           current = tokens.get(position);
         } else {
-          throw new RuntimeException("[ERROR] Expected a closed curly brace '}' at the end of block 'includes', got: '" + current.getType() + "'.");
+          throw new RuntimeException("\n[ERROR] Expected a closed curly brace '}' at the end of block 'includes', got: '" + current.getType() + "'.\n");
         }
       }
       position++;
     } else {
-      throw new RuntimeException("[ERROR] Expected an open curly brace '{', got: '" + current.getType() + "'.");
+      throw new RuntimeException("\n[ERROR] Expected an open curly brace '{', got: '" + current.getType() + "'.\n");
     }
 
     return node;
@@ -216,12 +216,12 @@ public class Parser {
           position++;
           current = tokens.get(position);
         } else {
-          throw new RuntimeException("[ERROR] Expected a closed curly brace '}' at the end of block 'cflags', got: '" + current.getType() + "'.");
+          throw new RuntimeException("\n[ERROR] Expected a closed curly brace '}' at the end of block 'cflags', got: '" + current.getType() + "'.\n");
         }
       }
       position++;
     } else {
-      throw new RuntimeException("[ERROR] Expected an open curly brace '{', got: '" + current.getType() + "'.");
+      throw new RuntimeException("\n[ERROR] Expected an open curly brace '{', got: '" + current.getType() + "'.\n");
     }
 
     return node;
@@ -246,12 +246,12 @@ public class Parser {
           position++;
           current = tokens.get(position);
         } else {
-          throw new RuntimeException("[ERROR] Expected a closed curly brace '}' at the end of block 'ldflags', got: '" + current.getType() + "'.");
+          throw new RuntimeException("\n[ERROR] Expected a closed curly brace '}' at the end of block 'ldflags', got: '" + current.getType() + "'.\n");
         }
       }
       position++;
     } else {
-      throw new RuntimeException("[ERROR] Expected an open curly brace '{', got: '" + current.getType() + "'.");
+      throw new RuntimeException("\n[ERROR] Expected an open curly brace '{', got: '" + current.getType() + "'.\n");
     }
 
     return node;

@@ -54,10 +54,10 @@ public class Lexer {
           continue;
         }
 
-        throw new RuntimeException("[ERROR] Unexpected char: '" + source.charAt(position) + "'.\n");
+        throw new RuntimeException("\n[ERROR] Unexpected char: '" + source.charAt(position) + "'. Line: " + line + ". Column: " + column + ".\n");
       }
     } catch (IOException e) {
-      String message = "Could not open file: '" + path + "'.\n";
+      String message = "\nCould not open file: '" + path + "'.\n";
       throw new RuntimeException(message);
     }
 
@@ -70,7 +70,8 @@ public class Lexer {
       c == '-' ||
       c == '_' ||
       c == '.' ||
-      c == '/';
+      c == '/' ||
+      c == '='; // Is need in, for example:  "-stc=c23"
   }
 
   private void consumeWhiteSpace(String source) {
@@ -109,7 +110,7 @@ public class Lexer {
 
     while (position < source.length() && source.charAt(position) != '"') {
       if (source.charAt(position) == '\n') {
-        throw new RuntimeException("[ERROR] String literals cannot spam multiple lines.");
+        throw new RuntimeException("\n[ERROR] String literals cannot spam multiple lines.");
       }
 
       position++;
@@ -117,7 +118,7 @@ public class Lexer {
     }
 
     if (position >= source.length()) {
-      throw new RuntimeException("[ERROR] Unterminated string literal.");
+      throw new RuntimeException("\n[ERROR] Unterminated string literal.");
     }
 
     String text = source.substring(start, position);
