@@ -271,8 +271,8 @@ public class Parser {
         System.out.printf("ProgramNode()\n");
 
         if (!node.getChildren().isEmpty()) {
-          for (ASTNode kid : node.getChildren()) {
-            printAST(kid, depth + 1);
+          for (ASTNode child : node.getChildren()) {
+            printAST(child, depth + 1);
           }
         }
         break;
@@ -292,8 +292,8 @@ public class Parser {
         System.out.printf("SourcesNode()\n");
 
         if (!node.getChildren().isEmpty()) {
-          for (ASTNode kid : node.getChildren()) {
-            printAST(kid, depth + 1);
+          for (ASTNode child : node.getChildren()) {
+            printAST(child, depth + 1);
           }
         }
         break;
@@ -308,8 +308,8 @@ public class Parser {
         System.out.printf("IncludesNode()\n");
 
         if (!node.getChildren().isEmpty()) {
-          for (ASTNode kid : node.getChildren()) {
-            printAST(kid, depth + 1);
+          for (ASTNode child : node.getChildren()) {
+            printAST(child, depth + 1);
           }
         }
         break;
@@ -334,8 +334,8 @@ public class Parser {
         System.out.printf("CFlagsNode()\n");
 
         if (!node.getChildren().isEmpty()) {
-          for (ASTNode kid : node.getChildren()) {
-            printAST(kid, depth + 1);
+          for (ASTNode child : node.getChildren()) {
+            printAST(child, depth + 1);
           }
         }
         break;
@@ -350,8 +350,8 @@ public class Parser {
         System.out.printf("LDFlagsNode()\n");
 
         if (!node.getChildren().isEmpty()) {
-          for (ASTNode kid : node.getChildren()) {
-            printAST(kid, depth + 1);
+          for (ASTNode child : node.getChildren()) {
+            printAST(child, depth + 1);
           }
         }
         break;

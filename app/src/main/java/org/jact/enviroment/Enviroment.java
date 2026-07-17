@@ -17,10 +17,10 @@ public class Enviroment {
     File[] contents = directory.listFiles();
 
     for (File file : contents) {
-      if (file.isDirectory()) {
-        findConfigFile(file.getPath());
-      } else if (isConfigFile(file)) {
+      if (file.isFile() && isConfigFile(file)) {
         return file.getAbsolutePath();
+      } else if (file.isDirectory()) {
+        findConfigFile(file.getPath());
       }
     }
 

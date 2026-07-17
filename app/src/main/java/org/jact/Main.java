@@ -3,6 +3,7 @@ package org.jact;
 import org.jact.ast.ASTNode;
 import org.jact.enviroment.Enviroment;
 import org.jact.files.ProjectExplorer;
+import org.jact.interpreter.Interpreter;
 
 public class Main {
   public static void main(String[] args) {
@@ -18,5 +19,10 @@ public class Main {
 
     ProjectExplorer explorer = new ProjectExplorer(env);
     ASTNode ast = explorer.generateAST();
+
+    Interpreter interpreter = new Interpreter(env);
+    interpreter.evaluateAST(ast);
+
+    System.out.println(interpreter.getCommands());
   }
 }

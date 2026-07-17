@@ -110,7 +110,7 @@ public class Lexer {
 
     while (position < source.length() && source.charAt(position) != '"') {
       if (source.charAt(position) == '\n') {
-        throw new RuntimeException("\n[ERROR] String literals cannot spam multiple lines.");
+        throw new RuntimeException("\n[ERROR] String literals cannot span multiple lines.");
       }
 
       position++;
