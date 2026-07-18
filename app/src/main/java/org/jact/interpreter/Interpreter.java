@@ -1,124 +1,95 @@
 package org.jact.interpreter;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.jact.ast.ASTNode;
-import org.jact.command.CommandRunner;
 import org.jact.enviroment.Enviroment;
+import org.jact.enviroment.BuildConfig;
 import org.jact.files.FileFinder;
 import org.jact.util.StringConcat;
 
 public class Interpreter {
   private Enviroment env;
-  List<String> commands;
 
   public Interpreter(Enviroment env) {
     this.env = env;
-    this.commands = new ArrayList<String>();
   }
 
-  // Build a commands like: gcc src/main.c src/game.c src/player.c -Wall -Iinclude -lm -o bin/game
-  // gcc -> compiler
-  // src/*.c -> source files
-  // -Wall -> c flag
-  // -Iinclude -> includes
-  // -lm -> ld flag
-  // // -o -> added by us
-  // bin -> output
-  // game -> project
-  public void evaluateAST(ASTNode node) {
+  public BuildConfig evaluateAST(ASTNode node) {
+    BuildConfig config = new BuildConfig();
+
+    visit(node, config);
+
+    return config;
+  }
+
+  private void visit(ASTNode node, BuildConfig config) {
     switch (node.getType()) {
       case NODE_DSL_PROGRAM:
-        if (!node.getChildren().isEmpty()) {
-          for (ASTNode child : node.getChildren()) {
-            evaluateAST(child);
-          }
-        }
+        visitChildren(node, config);
         break;
 
       case NODE_PROJECT:
-        commands.add(node.getValue());
+        config.setProject(node.getValue());
         break;
 
       case NODE_COMPILER:
-        commands.addFirst(node.getValue());
+        config.setCompiler(node.getValue());
         break;
 
       case NODE_SOURCES:
-        if (!node.getChildren().isEmpty()) {
-          for (ASTNode child : node.getChildren()) {
-            evaluateAST(child);
-          }
-        }
+        visitChildren(node, config);
         break;
 
       case NODE_SOURCE:
         FileFinder finder = new FileFinder(env);
         File[] sources = finder.filesToFind(node.getValue());
 
-        for (File file : sources) {
-          commands.add(StringConcat.concat(node.getValue(), "/", file.getName()));
+        for (File file : sources) { 
+          config.getSources().add(StringConcat.concat(node.getValue(), "/", file.getName()));
         }
         break;
 
       case NODE_INCLUDES:
-        if (!node.getChildren().isEmpty()) {
-          for (ASTNode child : node.getChildren()) {
-            evaluateAST(child);
-          }
-        }
+        visitChildren(node, config);
         break;
 
       case NODE_INCLUDE:
-        commands.add(StringConcat.concat("-I", node.getValue()));
+        config.getIncludes().add(StringConcat.concat("-I", node.getValue()));
         break;
 
       case NODE_OUTPUT:
-        commands.add(node.getValue());
+        config.setOutput(node.getValue());
         break;
 
       case NODE_TARGET:
         // Right now does nothing as only generates an executable
-        //commands.add(node.getValue());
+        config.setTarget(node.getValue());
         break;
 
       case NODE_CFLAGS:
-        if (!node.getChildren().isEmpty()) {
-          for (ASTNode child : node.getChildren()) {
-            evaluateAST(child);
-          }
-        }
+        visitChildren(node, config);
         break;
 
       case NODE_CFLAG:
-        commands.add(node.getValue());
+        config.getCflags().add(node.getValue());
         break;
 
       case NODE_LDFLAGS:
-        if (!node.getChildren().isEmpty()) {
-          for (ASTNode child : node.getChildren()) {
-            evaluateAST(child);
-          }
-        }
+        visitChildren(node, config);
         break;
 
       case NODE_LDFLAG:
-        commands.add(node.getValue());
+        config.getLdflags().add(node.getValue());
         break;
     }
-
-    System.out.println(commands);
-    /*CommandRunner runner = new CommandRunner(env);
-      runner.run(commands);*/
   }
 
-  public Enviroment getEnv() {
-    return env;
-  }
-
-  public List<String> getCommands() {
-    return commands;
+  private void visitChildren(ASTNode node, BuildConfig config) {
+    if (!node.getChildren().isEmpty()) {
+      for (ASTNode child : node.getChildren()) {
+        visit(child, config);
+      }
+    }
   }
 }

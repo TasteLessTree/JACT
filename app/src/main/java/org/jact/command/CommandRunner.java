@@ -38,13 +38,18 @@ public class CommandRunner {
         System.err.println("\n[ERROR] Could not read process standard error: '" + errorException.getMessage() + "'.\n");
       }
 
+      int exitCode = process.waitFor();
+      System.out.println("Compilation finished with exit code: " + exitCode);
+
     } catch (IOException e) {
       System.err.println("\n[ERROR] Could not start compilation process: '" + e.getMessage() + "'.\n");
+    } catch (InterruptedException e) {
+      System.err.println("\n[ERROR] Could not obtain compilation exit code: '" + e.getMessage() + "'.\n");
     }
   }
 
   private void processBuilder(List<String> commands) {
-    pb = new ProcessBuilder(commands);
+    this.pb = new ProcessBuilder(commands);
   }
 
   public Enviroment getEnv() {
