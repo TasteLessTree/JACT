@@ -6,6 +6,9 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jact.exceptions.LexerException;
+import org.jact.util.StringConcat;
+
 public class Lexer {
   private int position;
   private int line;
@@ -17,17 +20,17 @@ public class Lexer {
     this.column = 1;
   }
 
-  public List<Token> tokenize(String path) {
+  public List<Token> tokenize(String path) throws LexerException {
     List<Token> tokens = new ArrayList<Token>();
 
     try {
       String source = Files.readString(Path.of(path));
 
       while (position < source.length()) {
-         if (Character.isWhitespace(source.charAt(position))) {
+        if (Character.isWhitespace(source.charAt(position))) {
           consumeWhiteSpace(source);
           continue;
-         }
+        }
 
         if (source.charAt(position) == '#') {
           consumeComment(source); 
@@ -54,11 +57,10 @@ public class Lexer {
           continue;
         }
 
-        throw new RuntimeException("\n[ERROR] Unexpected char: '" + source.charAt(position) + "'. Line: " + line + ". Column: " + column + ".\n");
+        throw new LexerException(StringConcat.concat("Unexpected char: '", String.valueOf(source.charAt(position)), "'. Line: ", String.valueOf(line), ". Column: ", String.valueOf(column), "."));
       }
     } catch (IOException e) {
-      String message = "\nCould not open file: '" + path + "'.\n";
-      throw new RuntimeException(message);
+      throw new RuntimeException(StringConcat.concat("Could not open file: '", path, "'.\n"));
     }
 
     tokens.add(new Token(TokenType.TYPE_EOF, "End Of File", line, column));
@@ -100,7 +102,7 @@ public class Lexer {
     }
   }
 
-  private Token readString(String source) {
+  private Token readString(String source) throws LexerException {
     int startColumn = column;
 
     position++;
@@ -110,7 +112,7 @@ public class Lexer {
 
     while (position < source.length() && source.charAt(position) != '"') {
       if (source.charAt(position) == '\n') {
-        throw new RuntimeException("\n[ERROR] String literals cannot span multiple lines.");
+        throw new LexerException(StringConcat.concat("String literals cannot span multiple lines. Line: ", String.valueOf(line), ". Column: ", String.valueOf(column), "."));
       }
 
       position++;
@@ -118,7 +120,7 @@ public class Lexer {
     }
 
     if (position >= source.length()) {
-      throw new RuntimeException("\n[ERROR] Unterminated string literal.");
+      throw new LexerException(StringConcat.concat("Unterminated string literal. Line: ", String.valueOf(line), ". Column: ", String.valueOf(column), "."));
     }
 
     String text = source.substring(start, position);

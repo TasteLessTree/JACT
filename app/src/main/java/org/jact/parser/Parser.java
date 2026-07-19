@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.jact.ast.ASTNode;
 import org.jact.ast.NodeType;
+import org.jact.exceptions.ParserException;
 import org.jact.lexer.Token;
 import org.jact.lexer.TokenType;
+import org.jact.util.StringConcat;
 
 public class Parser {
   private List<Token> tokens;
@@ -16,7 +18,7 @@ public class Parser {
     this.position = 0;
   }
 
-  public ASTNode ASTBuilder() {
+  public ASTNode ASTBuilder() throws ParserException {
     ASTNode node = new ASTNode(NodeType.NODE_DSL_PROGRAM);
 
     while (tokens.get(position).getType() != TokenType.TYPE_EOF) {
@@ -66,7 +68,7 @@ public class Parser {
           break;
       
         default:
-          throw new RuntimeException("\n[ERROR] Unexpected token, unknown keyword: '" + tokens.get(position).getText() + "'.\n");
+          throw new ParserException(StringConcat.concat("Unexpected token, unknown keyword: '", tokens.get(position).getText(), "'. Line: ", String.valueOf(tokens.get(position).getLineNumber()), ". Column: ", String.valueOf(tokens.get(position).getColumn()), "."));
       }
     }
 
@@ -77,7 +79,7 @@ public class Parser {
     return actual == expected;
   }
 
-  private ASTNode parseProject() {
+  private ASTNode parseProject() throws ParserException {
     ASTNode node = new ASTNode(NodeType.NODE_PROJECT);
     position++;
 
@@ -86,13 +88,13 @@ public class Parser {
       node.setValue(current.getText());
       position++;
     } else {
-      throw new RuntimeException("\n[ERROR] Expected a string, got: '" + current.getType() + "'.\n");
+      throw new ParserException(StringConcat.concat("Expected a string, got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
     }
 
     return node;
   }
 
-  private ASTNode parseCompiler() {
+  private ASTNode parseCompiler() throws ParserException {
     ASTNode node = new ASTNode(NodeType.NODE_COMPILER);
     position++;
 
@@ -101,13 +103,13 @@ public class Parser {
       node.setValue(current.getText());
       position++;
     } else {
-      throw new RuntimeException("\n[ERROR] Expected an identifier, got: '" + current.getType() + "'.\n");
+      throw new ParserException(StringConcat.concat("Expected an identifier, got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
     }
 
     return node;
   }
 
-  private ASTNode parseOutput() {
+  private ASTNode parseOutput() throws ParserException {
     ASTNode node = new ASTNode(NodeType.NODE_OUTPUT);
     position++;
 
@@ -116,13 +118,13 @@ public class Parser {
       node.setValue(current.getText());
       position++;
     } else {
-      throw new RuntimeException("\n[ERROR] Expected an identifier, got: '" + current.getType() + "'.\n");
+      throw new ParserException(StringConcat.concat("Expected an identifier, got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
     }
 
     return node;
   }
 
-  private ASTNode parseTarget() {
+  private ASTNode parseTarget() throws ParserException {
     ASTNode node = new ASTNode(NodeType.NODE_TARGET);
     position++;
 
@@ -131,13 +133,13 @@ public class Parser {
       node.setValue(current.getText());
       position++;
     } else {
-      throw new RuntimeException("\n[ERROR] Expected an identifier, got: '" + current.getType() + "'.\n");
+      throw new ParserException(StringConcat.concat("Expected an identifier, got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
     }
 
     return node;
   }
 
-  private ASTNode parseSources() {
+  private ASTNode parseSources() throws ParserException {
     ASTNode node = new ASTNode(NodeType.NODE_SOURCES);
     position++;
 
@@ -156,18 +158,18 @@ public class Parser {
           position++;
           current = tokens.get(position);
         } else {
-          throw new RuntimeException("\n[ERROR] Expected a closed curly brace '}' at the end of block 'sources', got: '" + current.getType() + "'.\n");
+      throw new ParserException(StringConcat.concat("Expected a closed curly brace '}' at the end of block 'sources', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
         }
       }
       position++;
     } else {
-      throw new RuntimeException("\n[ERROR] Expected an open curly brace '{', got: '" + current.getType() + "'.\n");
+      throw new ParserException(StringConcat.concat("Expected an open curly brace '{', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
     }
 
     return node;
   }
 
-  private ASTNode parseIncludes() {
+  private ASTNode parseIncludes() throws ParserException {
     ASTNode node = new ASTNode(NodeType.NODE_INCLUDES);
     position++;
 
@@ -186,18 +188,18 @@ public class Parser {
           position++;
           current = tokens.get(position);
         } else {
-          throw new RuntimeException("\n[ERROR] Expected a closed curly brace '}' at the end of block 'includes', got: '" + current.getType() + "'.\n");
+      throw new ParserException(StringConcat.concat("Expected a closed curly brace '}' at the end of block 'includes', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
         }
       }
       position++;
     } else {
-      throw new RuntimeException("\n[ERROR] Expected an open curly brace '{', got: '" + current.getType() + "'.\n");
+      throw new ParserException(StringConcat.concat("Expected an open curly brace '{', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
     }
 
     return node;
   }
 
-  private ASTNode parseCFlags() {
+  private ASTNode parseCFlags() throws ParserException {
     ASTNode node = new ASTNode(NodeType.NODE_CFLAGS);
     position++;
 
@@ -216,18 +218,18 @@ public class Parser {
           position++;
           current = tokens.get(position);
         } else {
-          throw new RuntimeException("\n[ERROR] Expected a closed curly brace '}' at the end of block 'cflags', got: '" + current.getType() + "'.\n");
+      throw new ParserException(StringConcat.concat("Expected a closed curly brace '}' at the end of block 'cflags', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
         }
       }
       position++;
     } else {
-      throw new RuntimeException("\n[ERROR] Expected an open curly brace '{', got: '" + current.getType() + "'.\n");
+      throw new ParserException(StringConcat.concat("Expected an open curly brace '{', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
     }
 
     return node;
   }
 
-  private ASTNode parseLDFlags() {
+  private ASTNode parseLDFlags() throws ParserException {
     ASTNode node = new ASTNode(NodeType.NODE_LDFLAGS);
     position++;
 
@@ -246,12 +248,12 @@ public class Parser {
           position++;
           current = tokens.get(position);
         } else {
-          throw new RuntimeException("\n[ERROR] Expected a closed curly brace '}' at the end of block 'ldflags', got: '" + current.getType() + "'.\n");
+      throw new ParserException(StringConcat.concat("Expected a closed curly brace '}' at the end of block 'ldflags', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
         }
       }
       position++;
     } else {
-      throw new RuntimeException("\n[ERROR] Expected an open curly brace '{', got: '" + current.getType() + "'.\n");
+      throw new ParserException(StringConcat.concat("Expected an open curly brace '{', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
     }
 
     return node;

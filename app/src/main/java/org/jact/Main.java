@@ -17,13 +17,17 @@ public class Main {
     ProjectExplorer explorer = new ProjectExplorer(env);
     ASTNode ast = explorer.generateAST();
 
-    Interpreter interpreter = new Interpreter(env);
-    BuildConfig config = interpreter.evaluateAST(ast);
+    if (ast != null) {
+      Interpreter interpreter = new Interpreter(env);
+      BuildConfig config = interpreter.evaluateAST(ast);
 
-    CommandBuilder builder = new CommandBuilder(config);
-    List<String> commands = builder.build();
+      CommandBuilder builder = new CommandBuilder(config);
+      List<String> commands = builder.build();
 
-    CommandRunner runner = new CommandRunner(env);
-    runner.run(commands);
+      CommandRunner runner = new CommandRunner(env);
+      runner.run(commands);
+    } else {
+      System.err.println("Could not generate AST.");
+    }
   }
 }

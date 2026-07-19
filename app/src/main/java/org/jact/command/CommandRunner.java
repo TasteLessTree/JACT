@@ -43,6 +43,7 @@ public class CommandRunner {
 
     } catch (IOException e) {
       System.err.println("\n[ERROR] Could not start compilation process: '" + e.getMessage() + "'.\n");
+      System.err.println("Have you specified a compiler? Example: \"compiler clang\".");
     } catch (InterruptedException e) {
       System.err.println("\n[ERROR] Could not obtain compilation exit code: '" + e.getMessage() + "'.\n");
     }
