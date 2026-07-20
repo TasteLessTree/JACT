@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.jact.enviroment.Enviroment;
+import org.jact.exceptions.CommandRunnerException;
+import org.jact.util.StringConcat;
 
 public class CommandRunner {
   private Enviroment env;
@@ -15,7 +17,7 @@ public class CommandRunner {
     this.env = env;
   }
 
-  public void run(List<String> commands) {
+  public void run(List<String> commands) throws CommandRunnerException {
     try {
       processBuilder(commands);
       Process process = pb.start();
@@ -26,7 +28,7 @@ public class CommandRunner {
           System.out.println(line);
         }
       } catch (IOException readerException) {
-        System.err.println("\n[ERROR] Could not read process standard input: '" + readerException.getMessage() + "'.\n");
+        throw new CommandRunnerException(StringConcat.concat("Could not read process standard input: '", readerException.getMessage(), "'."));
       }
 
       try (BufferedReader error = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
@@ -35,17 +37,16 @@ public class CommandRunner {
           System.err.println(line);
         }
       } catch (IOException errorException) {
-        System.err.println("\n[ERROR] Could not read process standard error: '" + errorException.getMessage() + "'.\n");
+        throw new CommandRunnerException(StringConcat.concat("Could not read process standard error: '", errorException.getMessage(), "'."));
       }
 
       int exitCode = process.waitFor();
       System.out.println("Compilation finished with exit code: " + exitCode);
 
     } catch (IOException e) {
-      System.err.println("\n[ERROR] Could not start compilation process: '" + e.getMessage() + "'.\n");
-      System.err.println("Have you specified a compiler? Example: \"compiler clang\".");
+        throw new CommandRunnerException(StringConcat.concat("Could not start compilation process: '", e.getMessage(), "'.", "\n", "Have you specified a compiler? Example: \"compiler clang\"."));
     } catch (InterruptedException e) {
-      System.err.println("\n[ERROR] Could not obtain compilation exit code: '" + e.getMessage() + "'.\n");
+        throw new CommandRunnerException(StringConcat.concat("Could not obtain compilation exit code: '", e.getMessage(), "'."));
     }
   }
 

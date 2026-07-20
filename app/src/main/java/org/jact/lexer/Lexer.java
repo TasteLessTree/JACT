@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jact.exceptions.LexerException;
+import org.jact.exceptions.CommandRunnerException;
 import org.jact.util.StringConcat;
 
 public class Lexer {
@@ -20,7 +20,7 @@ public class Lexer {
     this.column = 1;
   }
 
-  public List<Token> tokenize(String path) throws LexerException {
+  public List<Token> tokenize(String path) throws CommandRunnerException {
     List<Token> tokens = new ArrayList<Token>();
 
     try {
@@ -57,7 +57,7 @@ public class Lexer {
           continue;
         }
 
-        throw new LexerException(StringConcat.concat("Unexpected char: '", String.valueOf(source.charAt(position)), "'. Line: ", String.valueOf(line), ". Column: ", String.valueOf(column), "."));
+        throw new CommandRunnerException(StringConcat.concat("Unexpected char: '", String.valueOf(source.charAt(position)), "'. Line: ", String.valueOf(line), ". Column: ", String.valueOf(column), "."));
       }
     } catch (IOException e) {
       throw new RuntimeException(StringConcat.concat("Could not open file: '", path, "'.\n"));
@@ -102,7 +102,7 @@ public class Lexer {
     }
   }
 
-  private Token readString(String source) throws LexerException {
+  private Token readString(String source) throws CommandRunnerException {
     int startColumn = column;
 
     position++;
@@ -112,7 +112,7 @@ public class Lexer {
 
     while (position < source.length() && source.charAt(position) != '"') {
       if (source.charAt(position) == '\n') {
-        throw new LexerException(StringConcat.concat("String literals cannot span multiple lines. Line: ", String.valueOf(line), ". Column: ", String.valueOf(column), "."));
+        throw new CommandRunnerException(StringConcat.concat("String literals cannot span multiple lines. Line: ", String.valueOf(line), ". Column: ", String.valueOf(column), "."));
       }
 
       position++;
@@ -120,7 +120,7 @@ public class Lexer {
     }
 
     if (position >= source.length()) {
-      throw new LexerException(StringConcat.concat("Unterminated string literal. Line: ", String.valueOf(line), ". Column: ", String.valueOf(column), "."));
+      throw new CommandRunnerException(StringConcat.concat("Unterminated string literal. Line: ", String.valueOf(line), ". Column: ", String.valueOf(column), "."));
     }
 
     String text = source.substring(start, position);
