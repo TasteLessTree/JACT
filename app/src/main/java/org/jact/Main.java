@@ -1,13 +1,13 @@
 package org.jact;
 
-import java.util.List;
 
 import org.jact.ast.ASTNode;
-import org.jact.command.CommandBuilder;
-import org.jact.command.CommandRunner;
+import org.jact.cli.CLICommandType;
+import org.jact.cli.CLIParser;
+import org.jact.cli.CLIRunner;
 import org.jact.enviroment.BuildConfig;
 import org.jact.enviroment.Enviroment;
-import org.jact.exceptions.CommandRunnerException;
+import org.jact.exceptions.CLIException;
 import org.jact.files.ProjectExplorer;
 import org.jact.interpreter.Interpreter;
 
@@ -23,15 +23,20 @@ public class Main {
         Interpreter interpreter = new Interpreter(env);
         BuildConfig config = interpreter.evaluateAST(ast);
 
-        CommandBuilder builder = new CommandBuilder(config);
-        List<String> commands = builder.build();
+        CLIRunner cliRunner = new CLIRunner(env, interpreter, config);
 
-        CommandRunner runner = new CommandRunner(env);
-        runner.run(commands);
+        if (args.length > 0) {
+          for (String arg : args) {
+            cliRunner.setWord(arg);
+            cliRunner.runCLICommand(CLIParser.checkForCommand(arg));
+          }
+        } else {
+          cliRunner.runCLICommand(CLICommandType.CLI_NO_ARGUMENTS);
+        }
       } else {
         System.err.println("Could not generate AST.");
       }
-    } catch (CommandRunnerException e) {
+    } catch (CLIException e) {
       System.err.println(e.getMessage());
     }
   }

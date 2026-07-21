@@ -1,5 +1,6 @@
 package org.jact.command;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,11 @@ public class CommandBuilder {
 
     commands.addAll(config.getSources());
 
+    // Create output directory if it does not exist
+    if (!new File(config.getOutput()).exists()) {
+      new File(config.getOutput()).mkdir();
+    }
+
     commands.add("-o");
     commands.add(StringConcat.concat(config.getOutput(), "/", config.getProject()));
 
@@ -42,10 +48,10 @@ public class CommandBuilder {
   }
 
   public BuildConfig getConfig() {
-      return config;
+    return config;
   }
 
   public void setConfig(BuildConfig config) {
-      this.config = config;
+    this.config = config;
   }
 }

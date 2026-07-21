@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.jact.ast.ASTNode;
 import org.jact.enviroment.Enviroment;
-import org.jact.exceptions.CommandRunnerException;
+import org.jact.exceptions.LexerException;
 import org.jact.exceptions.ParserException;
 import org.jact.lexer.Lexer;
 import org.jact.lexer.Token;
@@ -22,7 +22,7 @@ public class ProjectExplorer {
       String configFilePath = env.getConfigFilePath();
 
       if (configFilePath == null) {
-        System.err.println("\n[ERROR] Could not find configuration file ('project.jact') on this project: '" + env.getProjectPath() + "'.\n");
+        System.err.println("\nCould not find configuration file ('project.jact') on this project: '" + env.getProjectPath() + "'.\n");
         System.exit(1);
       }
 
@@ -31,7 +31,7 @@ public class ProjectExplorer {
       Parser parser = new Parser(tokens);
 
       return parser.ASTBuilder();
-    } catch (CommandRunnerException lexerE) {
+    } catch (LexerException lexerE) {
       System.err.println(lexerE.getMessage());
       return null;
     } catch (ParserException parserE) {
