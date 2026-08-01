@@ -9,6 +9,7 @@ import org.jact.exceptions.ParserException;
 import org.jact.lexer.Lexer;
 import org.jact.lexer.Token;
 import org.jact.parser.Parser;
+import org.jact.util.StringConcat;
 
 public class ProjectExplorer {
   private Enviroment env;
@@ -22,7 +23,7 @@ public class ProjectExplorer {
       String configFilePath = env.getConfigFilePath();
 
       if (configFilePath == null) {
-        System.err.println("\nCould not find configuration file ('project.jact') on this project: '" + env.getProjectPath() + "'.\n");
+        System.err.println(StringConcat.concat("\nCould not find configuration file ('project.jact') on this project: '", env.getProjectPath(), "'.\n"));
         System.exit(1);
       }
 

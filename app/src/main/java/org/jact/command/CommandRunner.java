@@ -41,7 +41,7 @@ public class CommandRunner {
       }
 
       int exitCode = process.waitFor();
-      System.out.println("Compilation finished with exit code: " + exitCode);
+      System.out.println(StringConcat.concat("Compilation finished with exit code: ", String.valueOf(exitCode)));
 
     } catch (IOException e) {
         throw new CommandRunnerException(StringConcat.concat("Could not start compilation process: '", e.getMessage(), "'.", "\n", "Have you specified a compiler? Example: \"compiler clang\"."));

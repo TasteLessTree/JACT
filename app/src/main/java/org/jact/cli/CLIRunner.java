@@ -12,44 +12,49 @@ import org.jact.interpreter.Interpreter;
 import org.jact.util.StringConcat;
 
 public class CLIRunner {
-  private Enviroment env;
-  private Interpreter interpreter;
-  private BuildConfig config;
-  private String word;
+  private CommandBuilder builder;
+  private CommandRunner runner;
+  private List<String> commands;
 
   public CLIRunner(Enviroment env, Interpreter interpreter, BuildConfig config) {
-    this.env = env;
-    this.interpreter = interpreter;
-    this.config = config;
+    this.builder = new CommandBuilder(config);
+    this.runner = new CommandRunner(env);
   }
 
-  public void runCLICommand(CLICommandType command) throws CLIException {
+  public void runNoArguments() throws CLIException {
     try {
-      CommandBuilder builder = new CommandBuilder(config);
-      CommandRunner runner = new CommandRunner(env);
+      this.commands = builder.buildCompilation();
+      runner.run(commands);
+    } catch (CommandRunnerException e) {
+      System.err.println(e.getMessage());
+    }
+  }
 
-      switch (command) {
-        case CLI_CLEAR:
-          break;
-
-        case CLI_MAKE:
-        case CLI_NO_ARGUMENTS:
-          List<String> commands = builder.build();
+  public void runArgument(String arg) throws CLIException {
+    try {
+      switch (arg.toLowerCase()) {
+        case "make":
+          this.commands = builder.buildCompilation();
           runner.run(commands);
           break;
 
-        case CLI_RUN:
+        case "clean":
           break;
 
-        case CLI_DEBUG:
+        case "run":
+          this.commands = builder.buildExecutable();
+          runner.run(commands);
           break;
 
-        case CLI_HELP:
+        case "debug":
+          break;
+
+        case "help":
           helpCommand();
           break;
 
-        case CLI_UNKNOWN:
-          throw new CLIException(StringConcat.concat("Unknow keyword: '" , word, "'."));
+        default:
+          throw new CLIException(StringConcat.concat("Unknow keyword: '" , arg, "'.", "\n", "Try running 'jact help'."));
       }
     } catch (CommandRunnerException e) {
       System.err.println(e.getMessage());
@@ -57,24 +62,21 @@ public class CLIRunner {
   }
 
   private void helpCommand() {
-    System.out.println("\t\t[Java Automated Compiler Toolkit]\n");
-    System.out.println("JACT is a simple tool to build simple C proyects!");
+    System.out.println("\t[Java Automated Compiler Toolkit]");
+    System.out.println("JACT is a simple tool to build simple C projects!");
     System.out.println();
 
     System.out.println("Usage:");
-    System.out.println("\tjact: searcher for the config file 'project.jact' and compiles the code.");
-    System.out.println("\tjact <make>: searcher for the config file 'project.jact' and compiles the code.");
+    System.out.println("\tjact: searches for the config file 'project.jact' and compiles the code.");
+    System.out.println("\tjact <make>: searches for the config file 'project.jact' and compiles the code.");
     System.out.println("\tjact <clean>: removes the execuatable file.");
     System.out.println("\tjact <run>: runs the execuatable file.");
-    System.out.println("\tjact <debug>: prints extra information about the config file and commands being run.");
     System.out.println("\tjact <help>: prints this guide.");
+    System.out.println("\tjact <debug>: prints extra information about the config file and commands being run.");
     System.out.println();
 
     System.out.println("Commands can be concatenated:");
     System.out.println("\t jact <clean> <make> <run>");
-  }
-
-  public void setWord(String word) {
-    this.word = word;
+    System.out.println();
   }
 }

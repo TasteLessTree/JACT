@@ -2,8 +2,6 @@ package org.jact;
 
 
 import org.jact.ast.ASTNode;
-import org.jact.cli.CLICommandType;
-import org.jact.cli.CLIParser;
 import org.jact.cli.CLIRunner;
 import org.jact.enviroment.BuildConfig;
 import org.jact.enviroment.Enviroment;
@@ -25,14 +23,14 @@ public class Main {
 
         CLIRunner cliRunner = new CLIRunner(env, interpreter, config);
 
-        if (args.length > 0) {
-          for (String arg : args) {
-            cliRunner.setWord(arg);
-            cliRunner.runCLICommand(CLIParser.checkForCommand(arg));
-          }
+        if (args.length == 0) {
+          cliRunner.runNoArguments();
         } else {
-          cliRunner.runCLICommand(CLICommandType.CLI_NO_ARGUMENTS);
+          for (String arg : args) {
+            cliRunner.runArgument(arg);
+          }
         }
+
       } else {
         System.err.println("Could not generate AST.");
       }
