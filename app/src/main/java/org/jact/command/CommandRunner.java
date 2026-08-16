@@ -17,9 +17,14 @@ public class CommandRunner {
     this.env = env;
   }
 
-  public void run(List<String> commands) throws CommandRunnerException {
+  public void run(List<String> commands, boolean inheritIO) throws CommandRunnerException {
     try {
       processBuilder(commands);
+      
+      if (inheritIO) {
+        pb.inheritIO();
+      }
+
       Process process = pb.start();
 
       try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
@@ -41,12 +46,13 @@ public class CommandRunner {
       }
 
       int exitCode = process.waitFor();
-      System.out.println(StringConcat.concat("Compilation finished with exit code: ", String.valueOf(exitCode)));
+      System.out.println(StringConcat.concat("Process finished with exit code: ", String.valueOf(exitCode)));
 
     } catch (IOException e) {
-        throw new CommandRunnerException(StringConcat.concat("Could not start compilation process: '", e.getMessage(), "'.", "\n", "Have you specified a compiler? Example: \"compiler clang\"."));
+      throw new CommandRunnerException(StringConcat.concat("Could not start process: '", e.getMessage(), "'."));
     } catch (InterruptedException e) {
-        throw new CommandRunnerException(StringConcat.concat("Could not obtain compilation exit code: '", e.getMessage(), "'."));
+      Thread.currentThread().interrupt();
+      throw new CommandRunnerException(StringConcat.concat("Process was interrupted: '", e.getMessage(), "'."));
     }
   }
 

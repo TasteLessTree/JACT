@@ -1,6 +1,5 @@
 package org.jact;
 
-
 import org.jact.ast.ASTNode;
 import org.jact.cli.CLIRunner;
 import org.jact.enviroment.BuildConfig;

@@ -23,7 +23,7 @@ public class ProjectExplorer {
       String configFilePath = env.getConfigFilePath();
 
       if (configFilePath == null) {
-        System.err.println(StringConcat.concat("\nCould not find configuration file ('project.jact') on this project: '", env.getProjectPath(), "'.\n"));
+        System.err.println(StringConcat.concat("Could not find configuration file ('project.jact') on this project: '", env.getProjectPath(), "'."));
         System.exit(1);
       }
 
