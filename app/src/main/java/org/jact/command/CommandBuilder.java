@@ -23,7 +23,7 @@ public class CommandBuilder {
   // -Iinclude -> includes
   // -Wall -> c flag
   // -lm -> ld flag
-  public List<String> buildForCompilation() {
+  public List<String> buildToCompile() {
     List<String> commands = new ArrayList<>();
 
     commands.addFirst(config.getCompiler());
@@ -47,10 +47,17 @@ public class CommandBuilder {
     return commands;
   }
 
-  public List<String> buildForExecution() {
+  public List<String> buildToExecute() {
     List<String> commands = new ArrayList<>();
 
-    commands.add(StringConcat.concat("./", config.getOutput(), "/", config.getProject()));
+    commands.add(
+        StringConcat.concat(
+          "./",
+          config.getOutput(),
+          "/",
+          config.getProject()
+          )
+        );
 
     return commands;
   }

@@ -25,7 +25,7 @@ public class Parser {
       // If token is sources/includes/cflags/ldflags, a '{' must follow
       // If token is project, a string must follow
       // We must check if the curly braces '{}' are being open and close correctly
-      
+
       switch (tokens.get(position).getType()) {
         case TYPE_PROJECT:
           ASTNode projectNode = parseProject();
@@ -66,9 +66,19 @@ public class Parser {
           ASTNode LDFlagsNode = parseLDFlags();
           node.addChildren(LDFlagsNode);
           break;
-      
+
         default:
-          throw new ParserException(StringConcat.concat("Unexpected token, unknown keyword: '", tokens.get(position).getText(), "'. Line: ", String.valueOf(tokens.get(position).getLineNumber()), ". Column: ", String.valueOf(tokens.get(position).getColumn()), "."));
+          throw new ParserException(
+              StringConcat.concat(
+                "Unexpected token, unknown keyword: '",
+                tokens.get(position).getText(),
+                "'. Line: ",
+                String.valueOf(tokens.get(position).getLineNumber()),
+                ". Column: ",
+                String.valueOf(tokens.get(position).getColumn()),
+                "."
+                )
+              );
       }
     }
 
@@ -88,7 +98,17 @@ public class Parser {
       node.setValue(current.getText());
       position++;
     } else {
-      throw new ParserException(StringConcat.concat("Expected a string, got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
+      throw new ParserException(
+          StringConcat.concat(
+            "Expected a string, got: '",
+            current.getType().toString(),
+            "'. Line: ",
+            String.valueOf(current.getLineNumber()),
+            ". Column: ",
+            String.valueOf(current.getColumn()),
+            "."
+            )
+          );
     }
 
     return node;
@@ -103,7 +123,17 @@ public class Parser {
       node.setValue(current.getText());
       position++;
     } else {
-      throw new ParserException(StringConcat.concat("Expected an identifier, got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
+      throw new ParserException(
+          StringConcat.concat(
+            "Expected an identifier, got: '",
+            current.getType().toString(),
+            "'. Line: ",
+            String.valueOf(current.getLineNumber()),
+            ". Column: ",
+            String.valueOf(current.getColumn()),
+            "."
+            )
+          );
     }
 
     return node;
@@ -118,7 +148,17 @@ public class Parser {
       node.setValue(current.getText());
       position++;
     } else {
-      throw new ParserException(StringConcat.concat("Expected an identifier, got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
+      throw new ParserException(
+          StringConcat.concat(
+            "Expected an identifier, got: '",
+            current.getType().toString(),
+            "'. Line: ",
+            String.valueOf(current.getLineNumber()),
+            ". Column: ",
+            String.valueOf(current.getColumn()),
+            "."
+            )
+          );
     }
 
     return node;
@@ -133,7 +173,17 @@ public class Parser {
       node.setValue(current.getText());
       position++;
     } else {
-      throw new ParserException(StringConcat.concat("Expected an identifier, got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
+      throw new ParserException(
+          StringConcat.concat(
+            "Expected an identifier, got: '",
+            current.getType().toString(),
+            "'. Line: ",
+            String.valueOf(current.getLineNumber()),
+            ". Column: ",
+            String.valueOf(current.getColumn()),
+            "."
+            )
+          );
     }
 
     return node;
@@ -158,12 +208,32 @@ public class Parser {
           position++;
           current = tokens.get(position);
         } else {
-      throw new ParserException(StringConcat.concat("Expected a closed curly brace '}' at the end of block 'sources', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
+          throw new ParserException(
+              StringConcat.concat(
+                "Expected a closed curly brace '}' at the end of block 'sources', got: '",
+                current.getType().toString(),
+                "'. Line: ",
+                String.valueOf(current.getLineNumber()),
+                ". Column: ",
+                String.valueOf(current.getColumn()),
+                "."
+                )
+              );
         }
       }
       position++;
     } else {
-      throw new ParserException(StringConcat.concat("Expected an open curly brace '{', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
+      throw new ParserException(
+          StringConcat.concat(
+            "Expected an open curly brace '{', got: '",
+            current.getType().toString(),
+            "'. Line: ",
+            String.valueOf(current.getLineNumber()),
+            ". Column: ",
+            String.valueOf(current.getColumn()),
+            "."
+            )
+          );
     }
 
     return node;
@@ -188,12 +258,32 @@ public class Parser {
           position++;
           current = tokens.get(position);
         } else {
-      throw new ParserException(StringConcat.concat("Expected a closed curly brace '}' at the end of block 'includes', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
+          throw new ParserException(
+              StringConcat.concat(
+                "Expected a closed curly brace '}' at the end of block 'includes', got: '",
+                current.getType().toString(),
+                "'. Line: ",
+                String.valueOf(current.getLineNumber()),
+                ". Column: ",
+                String.valueOf(current.getColumn()),
+                "."
+                )
+              );
         }
       }
       position++;
     } else {
-      throw new ParserException(StringConcat.concat("Expected an open curly brace '{', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
+      throw new ParserException(
+          StringConcat.concat(
+            "Expected an open curly brace '{', got: '",
+            current.getType().toString(),
+            "'. Line: ",
+            String.valueOf(current.getLineNumber()),
+            ". Column: ",
+            String.valueOf(current.getColumn()),
+            "."
+            )
+          );
     }
 
     return node;
@@ -218,12 +308,32 @@ public class Parser {
           position++;
           current = tokens.get(position);
         } else {
-      throw new ParserException(StringConcat.concat("Expected a closed curly brace '}' at the end of block 'cflags', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
+          throw new ParserException(
+              StringConcat.concat(
+                "Expected a closed curly brace '}' at the end of block 'cflags', got: '",
+                current.getType().toString(),
+                "'. Line: ",
+                String.valueOf(current.getLineNumber()),
+                ". Column: ",
+                String.valueOf(current.getColumn()),
+                "."
+                )
+              );
         }
       }
       position++;
     } else {
-      throw new ParserException(StringConcat.concat("Expected an open curly brace '{', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
+      throw new ParserException(
+          StringConcat.concat(
+            "Expected an open curly brace '{', got: '",
+            current.getType().toString(),
+            "'. Line: ",
+            String.valueOf(current.getLineNumber()),
+            ". Column: ",
+            String.valueOf(current.getColumn()),
+            "."
+            )
+          );
     }
 
     return node;
@@ -248,12 +358,32 @@ public class Parser {
           position++;
           current = tokens.get(position);
         } else {
-      throw new ParserException(StringConcat.concat("Expected a closed curly brace '}' at the end of block 'ldflags', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
+          throw new ParserException(
+              StringConcat.concat(
+                "Expected a closed curly brace '}' at the end of block 'ldflags', got: '",
+                current.getType().toString(),
+                "'. Line: ",
+                String.valueOf(current.getLineNumber()),
+                ". Column: ",
+                String.valueOf(current.getColumn()),
+                "."
+                )
+              );
         }
       }
       position++;
     } else {
-      throw new ParserException(StringConcat.concat("Expected an open curly brace '{', got: '", current.getType().toString(), "'. Line: ", String.valueOf(current.getLineNumber()), ". Column: ", String.valueOf(current.getColumn()), "."));
+      throw new ParserException(
+          StringConcat.concat(
+            "Expected an open curly brace '{', got: '",
+            current.getType().toString(),
+            "'. Line: ",
+            String.valueOf(current.getLineNumber()),
+            ". Column: ",
+            String.valueOf(current.getColumn()),
+            "."
+            )
+          );
     }
 
     return node;
@@ -262,7 +392,7 @@ public class Parser {
   // For debugging the AST
   private void printIndent(int depth) {
     for (int i = 0; i < depth; i++) {
-     System.out.print(' '); 
+      System.out.print(' '); 
     }
   }
 

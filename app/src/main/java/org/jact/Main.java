@@ -31,7 +31,7 @@ public class Main {
         }
 
       } else {
-        System.err.println("Could not generate AST.");
+        System.err.println("Could not generate AST from 'project.jact' file.");
       }
     } catch (CLIException e) {
       System.err.println(e.getMessage());

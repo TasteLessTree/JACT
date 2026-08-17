@@ -57,10 +57,27 @@ public class Lexer {
           continue;
         }
 
-        throw new LexerException(StringConcat.concat("Unexpected char: '", String.valueOf(source.charAt(position)), "'. Line: ", String.valueOf(line), ". Column: ", String.valueOf(column), "."));
+        throw new LexerException(
+            StringConcat.concat(
+              "Unexpected char: '",
+              String.valueOf(source.charAt(position)),
+              "'. Line: ",
+              String.valueOf(line),
+              ". Column: ",
+              String.valueOf(column),
+              "."
+              )
+            );
       }
     } catch (IOException e) {
-      throw new LexerException(StringConcat.concat("Could not open file: '", path, "'.\n"));
+      throw new LexerException(
+          StringConcat.concat(
+            "Could not open file: '",
+            path,
+            "'.",
+            "\n"
+            )
+          );
     }
 
     tokens.add(new Token(TokenType.TYPE_EOF, "End Of File", line, column));
@@ -112,7 +129,15 @@ public class Lexer {
 
     while (position < source.length() && source.charAt(position) != '"') {
       if (source.charAt(position) == '\n') {
-        throw new LexerException(StringConcat.concat("String literals cannot span multiple lines. Line: ", String.valueOf(line), ". Column: ", String.valueOf(column), "."));
+        throw new LexerException(
+            StringConcat.concat(
+              "String literals cannot span multiple lines. Line: ",
+              String.valueOf(line),
+              ". Column: ",
+              String.valueOf(column),
+              "."
+              )
+            );
       }
 
       position++;
@@ -120,7 +145,15 @@ public class Lexer {
     }
 
     if (position >= source.length()) {
-      throw new LexerException(StringConcat.concat("Unterminated string literal. Line: ", String.valueOf(line), ". Column: ", String.valueOf(column), "."));
+      throw new LexerException(
+          StringConcat.concat(
+            "Unterminated string literal. Line: ",
+            String.valueOf(line),
+            ". Column: ",
+            String.valueOf(column),
+            "."
+            )
+          );
     }
 
     String text = source.substring(start, position);

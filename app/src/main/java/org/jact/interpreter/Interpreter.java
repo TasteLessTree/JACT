@@ -46,7 +46,13 @@ public class Interpreter {
         File[] sources = finder.filesToFind(node.getValue());
 
         for (File file : sources) { 
-          config.getSources().add(StringConcat.concat(node.getValue(), "/", file.getName()));
+          config.getSources().add(
+              StringConcat.concat(
+                node.getValue(),
+                "/",
+                file.getName()
+                )
+              );
         }
         break;
 
@@ -55,7 +61,12 @@ public class Interpreter {
         break;
 
       case NODE_INCLUDE:
-        config.getIncludes().add(StringConcat.concat("-I", node.getValue()));
+        config.getIncludes().add(
+            StringConcat.concat(
+              "-I",
+              node.getValue()
+              )
+            );
         break;
 
       case NODE_OUTPUT:

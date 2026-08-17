@@ -17,6 +17,10 @@ public class CLIRunner {
   private CommandRunner runner;
   private List<String> commands;
 
+  private static final String ANSI_RESET = "\u001B[0m";
+  private static final String ANSI_YELLOW = "\u001B[33m";
+  private static final String TAG = StringConcat.concat(" [ ", ANSI_YELLOW, "DEBUG", ANSI_RESET, " ] ");
+
   public CLIRunner(Enviroment env, Interpreter interpreter, BuildConfig config) {
     this.builder = new CommandBuilder(config);
     this.runner = new CommandRunner(env);
@@ -25,8 +29,8 @@ public class CLIRunner {
 
   public void runNoArguments() throws CLIException {
     try {
-      commands = builder.buildForCompilation();
-      runner.run(commands, false);
+      commands = builder.buildToCompile();
+      runner.executeCompiler(commands);
     } catch (CommandRunnerException e) {
       System.err.println(e.getMessage());
     }
@@ -37,25 +41,56 @@ public class CLIRunner {
       commands.clear();
       switch (arg.toLowerCase()) {
         case "build":
-          commands = builder.buildForCompilation();
-          runner.run(commands, false);
+          commands = builder.buildToCompile();
+          runner.executeCompiler(commands);
           break;
 
         case "clean":
           break;
 
         case "run":
-          commands = builder.buildForCompilation();
-          System.out.println(commands);
-          runner.run(commands, false);
+          commands = builder.buildToCompile();
+          runner.executeCompiler(commands);
+          System.out.println();
 
-          commands = builder.buildForExecution();
-          System.out.println(commands);
-          runner.run(commands, true);
+          commands = builder.buildToExecute();
+          runner.executeProgram(commands);
           break;
 
         case "debug":
-          System.out.println(builder.getConfig());
+          System.out.println(
+              StringConcat.concat(
+                TAG,
+                "Compilation ->",
+                " ",
+                builder.buildToCompile().toString()
+                )
+              );
+
+          System.out.println(
+              StringConcat.concat(
+                TAG,
+                "Execution ->",
+                " ",
+                builder.buildToExecute().toString()
+                )
+              );
+
+          System.out.println(
+              StringConcat.concat(
+                TAG,
+                "Clean ->",
+                " ",
+                "TODO"
+                )
+              );
+
+          System.out.println(
+              StringConcat.concat(
+                TAG,
+                builder.getConfig().toString()
+                )
+              );
           break;
 
         case "help":
@@ -63,7 +98,15 @@ public class CLIRunner {
           break;
 
         default:
-          throw new CLIException(StringConcat.concat("Unknow keyword: '" , arg, "'.", "\n", "Try running 'jact help'."));
+          throw new CLIException(
+              StringConcat.concat(
+                "Unknow keyword: '",
+                arg,
+                "'.",
+                "\n",
+                "Try running 'jact help'."
+                )
+              );
       }
     } catch (CommandRunnerException e) {
       System.err.println(e.getMessage());
