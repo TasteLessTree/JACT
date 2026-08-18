@@ -7,6 +7,9 @@ import org.jact.enviroment.Enviroment;
 import org.jact.exceptions.CLIException;
 import org.jact.files.ProjectExplorer;
 import org.jact.interpreter.Interpreter;
+import org.jact.util.StringConcat;
+import org.jact.util.TagGenerator;
+import org.jact.util.TagType;
 
 public class Main {
   public static void main(String[] args) {
@@ -22,6 +25,16 @@ public class Main {
 
         CLIRunner cliRunner = new CLIRunner(env, interpreter, config);
 
+        if (!config.checkConfiguration(true)) {
+          System.err.println(
+              StringConcat.concat(
+                TagGenerator.generateTag(TagType.ERROR),
+                "Invalid configuration found!"
+                )
+              );
+          System.exit(1);
+        }
+
         if (args.length == 0) {
           cliRunner.runNoArguments();
         } else {
@@ -31,10 +44,20 @@ public class Main {
         }
 
       } else {
-        System.err.println("Could not generate AST from 'project.jact' file.");
+        System.err.println(
+            StringConcat.concat(
+              TagGenerator.generateTag(TagType.ERROR),
+              "Could not generate AST from 'project.jact' file."
+              )
+            );
       }
     } catch (CLIException e) {
-      System.err.println(e.getMessage());
+      System.err.println(
+          StringConcat.concat(
+            TagGenerator.generateTag(TagType.ERROR),
+            e.getMessage()
+            )
+          );
     }
   }
 }

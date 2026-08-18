@@ -11,15 +11,13 @@ import org.jact.enviroment.BuildConfig;
 import org.jact.enviroment.Enviroment;
 import org.jact.interpreter.Interpreter;
 import org.jact.util.StringConcat;
+import org.jact.util.TagGenerator;
+import org.jact.util.TagType;
 
 public class CLIRunner {
   private CommandBuilder builder;
   private CommandRunner runner;
   private List<String> commands;
-
-  private static final String ANSI_RESET = "\u001B[0m";
-  private static final String ANSI_YELLOW = "\u001B[33m";
-  private static final String TAG = StringConcat.concat(" [ ", ANSI_YELLOW, "DEBUG", ANSI_RESET, " ] ");
 
   public CLIRunner(Enviroment env, Interpreter interpreter, BuildConfig config) {
     this.builder = new CommandBuilder(config);
@@ -29,6 +27,7 @@ public class CLIRunner {
 
   public void runNoArguments() throws CLIException {
     try {
+      commands.clear();
       commands = builder.buildToCompile();
       runner.executeCompiler(commands);
     } catch (CommandRunnerException e) {
@@ -46,6 +45,8 @@ public class CLIRunner {
           break;
 
         case "clean":
+          commands = builder.buildToClean();
+          runner.executeClean(commands);
           break;
 
         case "run":
@@ -60,7 +61,7 @@ public class CLIRunner {
         case "debug":
           System.out.println(
               StringConcat.concat(
-                TAG,
+                TagGenerator.generateTag(TagType.DEBUG),
                 "Compilation ->",
                 " ",
                 builder.buildToCompile().toString()
@@ -69,7 +70,7 @@ public class CLIRunner {
 
           System.out.println(
               StringConcat.concat(
-                TAG,
+                TagGenerator.generateTag(TagType.DEBUG),
                 "Execution ->",
                 " ",
                 builder.buildToExecute().toString()
@@ -78,16 +79,16 @@ public class CLIRunner {
 
           System.out.println(
               StringConcat.concat(
-                TAG,
+                TagGenerator.generateTag(TagType.DEBUG),
                 "Clean ->",
                 " ",
-                "TODO"
+                builder.buildToClean().toString()
                 )
               );
 
           System.out.println(
               StringConcat.concat(
-                TAG,
+                TagGenerator.generateTag(TagType.DEBUG),
                 builder.getConfig().toString()
                 )
               );

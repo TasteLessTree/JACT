@@ -14,7 +14,7 @@ public class CommandBuilder {
     this.config = config;
   }
 
-  // Build a commands like: gcc src/main.c src/game.c src/player.c -o bin/game -Iinclude -Wall -lm
+  // Builds a command like: gcc src/main.c src/game.c src/player.c -o bin/game -Iinclude -Wall -lm
   // gcc -> compiler
   // src/*.c -> source files
   // -o -> added by us
@@ -47,12 +47,30 @@ public class CommandBuilder {
     return commands;
   }
 
+  // For example: ./bin/game
   public List<String> buildToExecute() {
     List<String> commands = new ArrayList<>();
 
     commands.add(
         StringConcat.concat(
           "./",
+          config.getOutput(),
+          "/",
+          config.getProject()
+          )
+        );
+
+    return commands;
+  }
+
+  // For example: rm /bin/game
+  public List<String> buildToClean() {
+    List<String> commands = new ArrayList<>();
+
+    commands.addFirst("rm");
+
+    commands.add(
+        StringConcat.concat(
           config.getOutput(),
           "/",
           config.getProject()
