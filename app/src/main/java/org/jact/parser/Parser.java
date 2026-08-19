@@ -25,7 +25,6 @@ public class Parser {
       // If token is sources/includes/cflags/ldflags, a '{' must follow
       // If token is project, a string must follow
       // We must check if the curly braces '{}' are being open and close correctly
-
       switch (tokens.get(position).getType()) {
         case TYPE_PROJECT:
           ASTNode projectNode = parseProject();

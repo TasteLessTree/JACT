@@ -25,7 +25,7 @@ public class Main {
 
         CLIRunner cliRunner = new CLIRunner(env, interpreter, config);
 
-        if (!config.checkConfiguration(true)) {
+        if (!config.checkConfiguration()) {
           System.err.println(
               StringConcat.concat(
                 TagGenerator.generateTag(TagType.ERROR),

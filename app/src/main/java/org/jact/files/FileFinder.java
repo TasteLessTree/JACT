@@ -13,13 +13,28 @@ public class FileFinder {
   }
 
   public File[] filesToFind(String dir) {
-    String path = StringConcat.concat(env.getProjectPath(), "/", dir);
+    String path = null;
+    if (env.isWindows()) {
+      path = StringConcat.concat(
+          env.getProjectPath(),
+          "\\",
+          dir
+          );
+
+    } else {
+      path = StringConcat.concat(
+          env.getProjectPath(),
+          "/",
+          dir
+          );
+    }
+
     File file = new File(path);
 
     return file.listFiles();
   }
 
   public Enviroment getEnv() {
-      return env;
+    return env;
   }
 }

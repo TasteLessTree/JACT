@@ -46,13 +46,23 @@ public class Interpreter {
         File[] sources = finder.filesToFind(node.getValue());
 
         for (File file : sources) { 
-          config.getSources().add(
-              StringConcat.concat(
-                node.getValue(),
-                "/",
-                file.getName()
-                )
-              );
+          if (env.isUnix()) {
+            config.getSources().add(
+                StringConcat.concat(
+                  node.getValue(),
+                  "/",
+                  file.getName()
+                  )
+                );
+          } else {
+            config.getSources().add(
+                StringConcat.concat(
+                  node.getValue(),
+                  "\\",
+                  file.getName()
+                  )
+                );
+          }
         }
         break;
 

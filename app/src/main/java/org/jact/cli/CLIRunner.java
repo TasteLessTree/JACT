@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.jact.command.CommandBuilder;
 import org.jact.command.CommandRunner;
+import org.jact.command.UnixCommandBuilder;
+import org.jact.command.WindowsCommandBuilder;
 import org.jact.exceptions.CommandRunnerException;
 import org.jact.exceptions.CLIException;
 import org.jact.enviroment.BuildConfig;
@@ -20,9 +22,14 @@ public class CLIRunner {
   private List<String> commands;
 
   public CLIRunner(Enviroment env, Interpreter interpreter, BuildConfig config) {
-    this.builder = new CommandBuilder(config);
     this.runner = new CommandRunner(env);
     this.commands = new ArrayList<>();
+
+    if (env.isUnix()) {
+      this.builder = new UnixCommandBuilder(config);
+    } else {
+      this.builder = new WindowsCommandBuilder(config);
+    }
   }
 
   public void runNoArguments() throws CLIException {

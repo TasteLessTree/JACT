@@ -10,6 +10,8 @@ import org.jact.lexer.Lexer;
 import org.jact.lexer.Token;
 import org.jact.parser.Parser;
 import org.jact.util.StringConcat;
+import org.jact.util.TagGenerator;
+import org.jact.util.TagType;
 
 public class ProjectExplorer {
   private Enviroment env;
@@ -25,6 +27,7 @@ public class ProjectExplorer {
       if (configFilePath == null) {
         System.err.println(
             StringConcat.concat(
+              TagGenerator.generateTag(TagType.ERROR),
               "Could not find configuration file ('project.jact') on this project: '",
               env.getProjectPath(),
               "'."

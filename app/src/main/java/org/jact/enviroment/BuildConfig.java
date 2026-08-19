@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jact.util.StringConcat;
+
 public class BuildConfig {
   private String project;
   private String compiler;
@@ -23,33 +25,25 @@ public class BuildConfig {
     this.ldflags = new ArrayList<>();
   }
 
-  public boolean checkConfiguration(boolean everyField) {
+  public boolean checkConfiguration() {
     Map<String, Boolean> map = isValidConfiguration();
 
-    if (everyField) {
-      for (String key : map.keySet()) {
-        if (map.get(key) == false) {
-          System.out.println("Found: " + key + " being false");
-          return false;
-        }
-      }
-      return true;
-    } else {
-      if (map.get("project") == false) {
-        System.out.println("Project is false");
-        return false;
-      } else if (map.get("compiler") == false) {
-        System.out.println("Compiler is false");
-        return false;
-      } else if (map.get("output") == false) {
-        System.out.println("Output is false");
-        return false;
-      } else if (map.get("sources") == false) {
-        System.out.println("Sources are empty");
+    for (String key : map.keySet()) {
+      if (map.get(key) == false) {
+        System.out.println(
+            StringConcat.concat(
+              "Missing: '",
+              key,
+              "'.",
+              "\n",
+              "Please, make sure to set '",
+              key,
+              "' correctly on 'project.jact'."
+              )
+            );
         return false;
       }
     }
-
     return true;
   }
 
