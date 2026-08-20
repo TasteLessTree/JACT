@@ -66,39 +66,7 @@ public class CLIRunner {
           break;
 
         case "debug":
-          System.out.println(
-              StringConcat.concat(
-                TagGenerator.generateTag(TagType.DEBUG),
-                "Compilation ->",
-                " ",
-                builder.buildToCompile().toString()
-                )
-              );
-
-          System.out.println(
-              StringConcat.concat(
-                TagGenerator.generateTag(TagType.DEBUG),
-                "Execution ->",
-                " ",
-                builder.buildToExecute().toString()
-                )
-              );
-
-          System.out.println(
-              StringConcat.concat(
-                TagGenerator.generateTag(TagType.DEBUG),
-                "Clean ->",
-                " ",
-                builder.buildToClean().toString()
-                )
-              );
-
-          System.out.println(
-              StringConcat.concat(
-                TagGenerator.generateTag(TagType.DEBUG),
-                builder.getConfig().toString()
-                )
-              );
+          debugCommand();
           break;
 
         case "help":
@@ -138,5 +106,41 @@ public class CLIRunner {
     System.out.println("Commands can be concatenated:");
     System.out.println("\tjact <clean> <build> <run>");
     System.out.println();
+  }
+
+  private void debugCommand() {
+    System.out.println(
+        StringConcat.concat(
+          TagGenerator.generateTag(TagType.DEBUG),
+          "Compilation ->",
+          " ",
+          builder.buildToCompile().toString()
+          )
+        );
+
+    System.out.println(
+        StringConcat.concat(
+          TagGenerator.generateTag(TagType.DEBUG),
+          "Execution ->",
+          " ",
+          builder.buildToExecute().toString()
+          )
+        );
+
+    System.out.println(
+        StringConcat.concat(
+          TagGenerator.generateTag(TagType.DEBUG),
+          "Clean ->",
+          " ",
+          builder.buildToClean().toString()
+          )
+        );
+
+    System.out.println(
+        StringConcat.concat(
+          TagGenerator.generateTag(TagType.DEBUG),
+          builder.getConfig().toString()
+          )
+        );
   }
 }
