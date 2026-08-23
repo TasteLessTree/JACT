@@ -72,18 +72,22 @@ public class WindowsCommandBuilder extends CommandBuilder {
   // del /bin/game.exe
   @Override
   public List<String> buildToClean() {
+    String pathToExecutable = StringConcat.concat(
+        config.getOutput(),
+        "\\",
+        config.getProject(),
+        ".exe"
+        );
+
+    if (!new File(pathToExecutable).exists()) {
+      return null;
+    }
+
     List<String> commands = new ArrayList<>();
 
     commands.addFirst("del");
 
-    commands.add(
-        StringConcat.concat(
-          config.getOutput(),
-          "\\",
-          config.getProject(),
-          ".exe"
-          )
-        );
+    commands.add(pathToExecutable);
 
     return commands;
   }

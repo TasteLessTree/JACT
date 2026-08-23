@@ -6,6 +6,6 @@ import org.jact.util.TagType;
 
 public class ParserException extends Exception{
   public ParserException(String m) {
-    super(StringConcat.concat(TagGenerator.generateTag(TagType.ERROR), " ", m));
+    super(StringConcat.concat(TagGenerator.generateTag(TagType.ERROR), m));
   } 
 }

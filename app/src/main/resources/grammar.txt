@@ -1,36 +1,36 @@
 program
-    := statement* EOF
+  := statement* EOF
 
 statement
-    := project
-     | compiler
-     | sources
-     | includes
-     | output
-     | target
-     | cflags
-     | ldflags
+  := project
+  | compiler
+  | sources
+  | includes
+  | output
+  | target
+  | cflags
+  | ldflags
 
 project
-    := PROJECT STRING
+  := PROJECT STRING
 
 compiler
-    := COMPILER IDENT
+  := COMPILER IDENT
 
 sources
-    := SOURCES "{" IDENT* "}"
+  := SOURCES "{" IDENT* "}"
 
 includes
-    := INCLUDES "{" IDENT* "}"
+  := INCLUDES "{" IDENT* "}"
 
 output
-    := OUTPUT IDENT
+  := OUTPUT IDENT
 
 target
-    := TARGET IDENT
+  := TARGET IDENT
 
 cflags
-    := CFLAGS "{" IDENT* "}"
+  := CFLAGS "{" IDENT* "}"
 
 ldflags
-    := LDFLAGS "{" IDENT* "}"
+  := LDFLAGS "{" IDENT* "}"

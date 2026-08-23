@@ -72,17 +72,21 @@ public class UnixCommandBuilder extends CommandBuilder {
   // For example: rm /bin/game
   @Override
   public List<String> buildToClean() {
+    String pathToExecutable = StringConcat.concat(
+        config.getOutput(),
+        "/",
+        config.getProject()
+        );
+
+    if (!new File(pathToExecutable).exists()) {
+      return null;
+    }
+
     List<String> commands = new ArrayList<>();
 
     commands.addFirst("rm");
 
-    commands.add(
-        StringConcat.concat(
-          config.getOutput(),
-          "/",
-          config.getProject()
-          )
-        );
+    commands.add(pathToExecutable);
 
     return commands;
   }

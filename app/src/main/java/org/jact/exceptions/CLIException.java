@@ -6,6 +6,6 @@ import org.jact.util.TagType;
 
 public class CLIException extends Exception {
   public CLIException(String m) {
-    super(StringConcat.concat(TagGenerator.generateTag(TagType.ERROR), " ", m));
+    super(StringConcat.concat(TagGenerator.generateTag(TagType.ERROR), m));
   }
 }

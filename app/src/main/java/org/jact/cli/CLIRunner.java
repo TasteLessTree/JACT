@@ -53,7 +53,18 @@ public class CLIRunner {
 
         case "clean":
           commands = builder.buildToClean();
-          runner.executeClean(commands);
+
+          if (commands != null) {
+            runner.executeClean(commands);
+          } else {
+            System.out.println(
+                StringConcat.concat(
+                  "\n",
+                  TagGenerator.generateTag(TagType.DEBUG),
+                  "Executable does not exists."
+                  )
+                );
+          }
           break;
 
         case "run":

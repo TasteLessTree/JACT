@@ -13,7 +13,8 @@ public class FileFinder {
   }
 
   public File[] filesToFind(String dir) {
-    String path = null;
+    String path;
+
     if (env.isWindows()) {
       path = StringConcat.concat(
           env.getProjectPath(),

@@ -1,4 +1,4 @@
-# This is an exampla of the syntax for my custom DSL
+# This is an example of the syntax for the custom DSL
 # Lines beging with '#' are comments
 
 project "MyProject"
