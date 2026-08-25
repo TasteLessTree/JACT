@@ -61,7 +61,10 @@ public class CLIRunner {
                 StringConcat.concat(
                   "\n",
                   TagGenerator.generateTag(TagType.DEBUG),
-                  "Executable does not exists."
+                  "Executable does not exists.",
+                  "\n",
+                  TagGenerator.generateTag(TagType.DEBUG),
+                  "Try running 'jact build'."
                   )
                 );
           }
