@@ -23,17 +23,7 @@ public class Main {
         Interpreter interpreter = new Interpreter(env);
         BuildConfig config = interpreter.evaluateAST(ast);
 
-        CLIRunner cliRunner = new CLIRunner(env, interpreter, config);
-
-        if (!config.checkConfiguration()) {
-          System.err.println(
-              StringConcat.concat(
-                TagGenerator.generateTag(TagType.ERROR),
-                "Invalid configuration found!"
-                )
-              );
-          System.exit(1);
-        }
+        CLIRunner cliRunner = new CLIRunner(args, env, interpreter, config);
 
         if (args.length == 0) {
           cliRunner.runNoArguments();

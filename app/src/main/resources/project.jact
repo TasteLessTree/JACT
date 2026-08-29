@@ -1,7 +1,7 @@
 # This is an example of the syntax for the custom DSL
 # Lines beging with '#' are comments
 
-project "MyProject"
+project "MyGame"
 
 compiler gcc
 
@@ -12,6 +12,10 @@ sources {
 
 includes {
   include
+}
+
+linker {
+  raylib
 }
 
 output build

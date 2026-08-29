@@ -17,15 +17,17 @@ public class BuildConfig {
   private List<String> includes;
   private List<String> cflags;
   private List<String> ldflags;
+  private List<String> links;
 
   public BuildConfig() {
     this.sources = new ArrayList<>();
     this.includes = new ArrayList<>();
     this.cflags = new ArrayList<>();
     this.ldflags = new ArrayList<>();
+    this.links = new ArrayList<>();
   }
 
-  public boolean checkConfiguration() {
+  public void checkConfiguration() {
     Map<String, Boolean> map = isValidConfiguration();
 
     for (String key : map.keySet()) {
@@ -41,10 +43,8 @@ public class BuildConfig {
               "' correctly on 'project.jact'."
               )
             );
-        return false;
       }
     }
-    return true;
   }
 
   private Map<String, Boolean> isValidConfiguration() {
@@ -95,6 +95,10 @@ public class BuildConfig {
     return ldflags;
   }
 
+  public List<String> getLinks() {
+      return links;
+  }
+
   public void setProject(String project) {
     this.project = project;
   }
@@ -127,6 +131,10 @@ public class BuildConfig {
     this.ldflags = ldflags;
   }
 
+  public void setLinks(List<String> links) {
+      this.links = links;
+  }
+
   @Override
   public String toString() {
     return "Build Configuration -> {\n" +
@@ -138,6 +146,7 @@ public class BuildConfig {
       "\tIncludes: " + includes + "\n" +
       "\tC Flags: " + cflags + "\n" +
       "\tLD Flags: " + ldflags + "\n" +
+      "\tLinking with: " + links + "\n" +
       "}";
   }
 }

@@ -49,8 +49,4 @@ public class ProjectExplorer {
       return null;
     }
   }
-
-  public Enviroment getEnv() {
-    return env;
-  }
 }

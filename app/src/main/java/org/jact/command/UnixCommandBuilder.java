@@ -49,6 +49,8 @@ public class UnixCommandBuilder extends CommandBuilder {
 
     commands.addAll(config.getLdflags());
 
+    commands.addAll(config.getLinks());
+
     return commands;
   }
 

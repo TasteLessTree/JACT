@@ -48,6 +48,8 @@ public class WindowsCommandBuilder extends CommandBuilder {
 
     commands.addAll(config.getLdflags());
 
+    commands.addAll(config.getLinks());
+
     return commands;
   }
 

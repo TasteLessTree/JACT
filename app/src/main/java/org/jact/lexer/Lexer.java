@@ -205,6 +205,8 @@ public class Lexer {
       return TokenType.TYPE_CFLAGS;
     } else if (word.equalsIgnoreCase("ldflags")) {
       return TokenType.TYPE_LDFLAGS;
+    } else if (word.equalsIgnoreCase("linker")) {
+      return TokenType.TYPE_LINKER;
     }
 
     return TokenType.TYPE_IDENT;

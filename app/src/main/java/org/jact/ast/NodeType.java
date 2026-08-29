@@ -14,4 +14,6 @@ public enum NodeType {
   NODE_CFLAG,
   NODE_LDFLAGS,
   NODE_LDFLAG,
+  NODE_LINKER,
+  NODE_LINK,
 }

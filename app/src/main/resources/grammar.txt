@@ -10,6 +10,7 @@ statement
   | target
   | cflags
   | ldflags
+  | linkerflags
 
 project
   := PROJECT STRING
@@ -34,3 +35,6 @@ cflags
 
 ldflags
   := LDFLAGS "{" IDENT* "}"
+
+linkerflags
+  := LINKERFLAGS "{" IDENT* "}"

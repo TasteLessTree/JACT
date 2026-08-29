@@ -103,6 +103,19 @@ public class Interpreter {
       case NODE_LDFLAG:
         config.getLdflags().add(node.getValue());
         break;
+
+      case NODE_LINKER:
+        visitChildren(node, config);
+        break;
+
+      case NODE_LINK:
+        config.getLinks().add(
+            StringConcat.concat(
+              "-l",
+              node.getValue()
+              )
+            );
+        break;
     }
   }
 

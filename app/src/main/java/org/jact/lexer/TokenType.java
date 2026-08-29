@@ -14,5 +14,6 @@ public enum TokenType {
   TYPE_TARGET,
   TYPE_CFLAGS,
   TYPE_LDFLAGS,
+  TYPE_LINKER,
   TYPE_EOF,
 }

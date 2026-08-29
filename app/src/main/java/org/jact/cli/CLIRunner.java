@@ -17,11 +17,13 @@ import org.jact.util.TagGenerator;
 import org.jact.util.TagType;
 
 public class CLIRunner {
+  private String[] args;
   private CommandBuilder builder;
   private CommandRunner runner;
   private List<String> commands;
 
-  public CLIRunner(Enviroment env, Interpreter interpreter, BuildConfig config) {
+  public CLIRunner(String[] args, Enviroment env, Interpreter interpreter, BuildConfig config) {
+    this.args = args;
     this.runner = new CommandRunner(env);
     this.commands = new ArrayList<>();
 
@@ -126,6 +128,15 @@ public class CLIRunner {
     System.out.println(
         StringConcat.concat(
           TagGenerator.generateTag(TagType.DEBUG),
+          "JACT arguments ->",
+          " ",
+          argsToString()
+          )
+        );
+
+    System.out.println(
+        StringConcat.concat(
+          TagGenerator.generateTag(TagType.DEBUG),
           "Compilation ->",
           " ",
           builder.buildToCompile().toString()
@@ -156,5 +167,28 @@ public class CLIRunner {
           builder.getConfig().toString()
           )
         );
+  }
+
+  private String argsToString() {
+    if (getArgs().length == 0) {
+      return "Running JACT without arguments";
+    }
+
+    String arguments = "[ ";
+
+    for (int i = 0; i < getArgs().length; i++) {
+      arguments += StringConcat.concat(
+          getArgs()[i],
+          ", "
+          );
+    }
+
+    arguments += "]";
+
+    return arguments;
+  }
+
+  public String[] getArgs() {
+      return args;
   }
 }

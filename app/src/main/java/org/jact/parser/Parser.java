@@ -66,6 +66,11 @@ public class Parser {
           node.addChildren(LDFlagsNode);
           break;
 
+        case TYPE_LINKER:
+          ASTNode linkerNode = parseLinker();
+          node.addChildren(linkerNode);
+          break;
+
         default:
           throw new ParserException(
               StringConcat.concat(
@@ -388,6 +393,56 @@ public class Parser {
     return node;
   }
 
+  private ASTNode parseLinker() throws ParserException {
+    ASTNode node = new ASTNode(NodeType.NODE_LINKER);
+    position++;
+
+    Token current = tokens.get(position);
+    if (expectTokenType(current.getType(), TokenType.TYPE_OPEN_CBRACE)) {
+      position++;
+      current = tokens.get(position);
+
+      while (current.getType() != TokenType.TYPE_CLOSE_CBRACE) {
+        ASTNode ident = new ASTNode(NodeType.NODE_LINK);
+
+        if (expectTokenType(current.getType(), TokenType.TYPE_IDENT)) {
+          ident.setValue(current.getText());
+          node.addChildren(ident);
+
+          position++;
+          current = tokens.get(position);
+        } else {
+          throw new ParserException(
+              StringConcat.concat(
+                "Expected a closed curly brace '}' at the end of block 'linker', got: '",
+                current.getType().toString(),
+                "'. Line: ",
+                String.valueOf(current.getLineNumber()),
+                ". Column: ",
+                String.valueOf(current.getColumn()),
+                "."
+                )
+              );
+        }
+      }
+      position++;
+    } else {
+      throw new ParserException(
+          StringConcat.concat(
+            "Expected an open curly brace '{', got: '",
+            current.getType().toString(),
+            "'. Line: ",
+            String.valueOf(current.getLineNumber()),
+            ". Column: ",
+            String.valueOf(current.getColumn()),
+            "."
+            )
+          );
+    }
+
+    return node;
+  }
+
   // For debugging the AST
   private void printIndent(int depth) {
     for (int i = 0; i < depth; i++) {
@@ -490,6 +545,22 @@ public class Parser {
       case NODE_LDFLAG:
         printIndent(depth + 2);
         System.out.printf("LDFlagNode(%s)\n", node.getValue());
+        break;
+
+      case NODE_LINKER:
+        printIndent(depth + 1);
+        System.out.printf("LinkerNode()\n");
+
+        if (!node.getChildren().isEmpty()) {
+          for (ASTNode child : node.getChildren()) {
+            printAST(child, depth + 1);
+          }
+        }
+        break;
+
+      case NODE_LINK:
+        printIndent(depth + 2);
+        System.out.printf("LinkNode(%s)\n", node.getValue());
         break;
     }
   }
