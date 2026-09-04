@@ -34,13 +34,12 @@ public class BuildConfig {
       if (map.get(key) == false) {
         System.out.println(
             StringConcat.concat(
-              "Missing: '",
+              "'",
               key,
-              "'.",
-              "\n",
-              "Please, make sure to set '",
+              "'. ",
+              "Is unset, make sure to set '",
               key,
-              "' correctly on 'project.jact'."
+              "' correctly on 'project.jact' if you need it."
               )
             );
       }
@@ -59,6 +58,7 @@ public class BuildConfig {
     map.put("includes", !getIncludes().isEmpty());
     map.put("cflags", !getCflags().isEmpty());
     map.put("ldflags", !getLdflags().isEmpty());
+    map.put("linker", !getLinks().isEmpty());
 
     return map;
   }

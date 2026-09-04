@@ -24,14 +24,7 @@ public class Main {
         BuildConfig config = interpreter.evaluateAST(ast);
 
         CLIRunner cliRunner = new CLIRunner(args, env, interpreter, config);
-
-        if (args.length == 0) {
-          cliRunner.runNoArguments();
-        } else {
-          for (String arg : args) {
-            cliRunner.runArgument(arg);
-          }
-        }
+        cliRunner.execute();
 
       } else {
         System.err.println(

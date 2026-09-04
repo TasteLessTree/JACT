@@ -21,11 +21,13 @@ public class CLIRunner {
   private CommandBuilder builder;
   private CommandRunner runner;
   private List<String> commands;
+  private BuildConfig config;
 
   public CLIRunner(String[] args, Enviroment env, Interpreter interpreter, BuildConfig config) {
     this.args = args;
     this.runner = new CommandRunner(env);
     this.commands = new ArrayList<>();
+    this.config = config;
 
     if (env.isUnix()) {
       this.builder = new UnixCommandBuilder(config);
@@ -34,7 +36,17 @@ public class CLIRunner {
     }
   }
 
-  public void runNoArguments() throws CLIException {
+  public void execute() throws CLIException {
+    if (args.length == 0) {
+      runNoArguments();
+    }
+
+    for (String arg : args) {
+      runArgument(arg);
+    }
+  }
+
+  private void runNoArguments() throws CLIException {
     try {
       commands.clear();
       commands = builder.buildToCompile();
@@ -44,7 +56,7 @@ public class CLIRunner {
     }
   }
 
-  public void runArgument(String arg) throws CLIException {
+  private void runArgument(String arg) throws CLIException {
     try {
       commands.clear();
       switch (arg.toLowerCase()) {
@@ -85,8 +97,13 @@ public class CLIRunner {
           debugCommand();
           break;
 
-        case "help":
+        case "-h":
+        case "--help":
           helpCommand();
+          break;
+
+        case "--check-config":
+          config.checkConfiguration();
           break;
 
         default:
@@ -96,7 +113,7 @@ public class CLIRunner {
                 arg,
                 "'.",
                 "\n",
-                "Try running 'jact help'."
+                "Try running 'jact --help'."
                 )
               );
       }
@@ -110,17 +127,24 @@ public class CLIRunner {
     System.out.println("JACT is a simple tool to build simple C projects!");
     System.out.println();
 
-    System.out.println("Usage:");
-    System.out.println("\tjact: searches for the config file 'project.jact' and compiles the code.");
-    System.out.println("\tjact <build>: searches for the config file 'project.jact' and compiles the code.");
-    System.out.println("\tjact <clean>: removes the execuatable file.");
-    System.out.println("\tjact <run>: runs the execuatable file.");
-    System.out.println("\tjact <help>: prints this guide.");
-    System.out.println("\tjact <debug>: prints extra information about the commands being run.");
+    System.out.println("Usage: jact [command] [arguments]");
+    System.out.println();
+
+    System.out.println("Options:");
+    System.out.println("  -h, --help: prints this guide.");
+    System.out.println("  --check-config: checks the 'project.jact' config file and prints whether or not there are empty fields.");
+    System.out.println();
+
+    System.out.println("Commands:");
+    System.out.println("  jact: searches for the config file 'project.jact' and compiles the code.");
+    System.out.println("  build: searches for the config file 'project.jact' and compiles the code (same as running 'jact' without arguments).");
+    System.out.println("  clean: removes the execuatable file.");
+    System.out.println("  run: runs the execuatable file.");
+    System.out.println("  debug: prints extra information about the commands being run.");
     System.out.println();
 
     System.out.println("Commands can be concatenated:");
-    System.out.println("\tjact <clean> <build> <run>");
+    System.out.println("  jact <clean> <build> <run>");
     System.out.println();
   }
 
@@ -164,13 +188,14 @@ public class CLIRunner {
     System.out.println(
         StringConcat.concat(
           TagGenerator.generateTag(TagType.DEBUG),
+          "\n",
           builder.getConfig().toString()
           )
         );
   }
 
   private String argsToString() {
-    if (getArgs().length == 0) {
+    if (args.length == 0) {
       return "Running JACT without arguments";
     }
 
@@ -179,7 +204,7 @@ public class CLIRunner {
     for (int i = 0; i < getArgs().length; i++) {
       arguments += StringConcat.concat(
           getArgs()[i],
-          ", "
+          " "
           );
     }
 
